@@ -57,3 +57,46 @@ func processLMAEstateManager(stub shim.ChaincodeStubInterface, args []string) pb
 
 	return shim.Success(nil)
 }
+
+func estateManagerHearing(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	if len(args) != 1 {
+		return shim.Error("Invalid Arguments Count.")
+	}
+
+	input := struct {
+		ApplicationID        string `json:"application_id"`
+		EstateManagerComment string `json:"comment"`
+	}{}
+	err := json.Unmarshal([]byte(args[0]), &input)
+
+	lmaKey, err := stub.CreateCompositeKey(prefixLMA, []string{input.ApplicationID})
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	lmaBytes, _ := stub.GetState(lmaKey)
+	if len(lmaBytes) == 0 {
+		return shim.Error("Land Mutation Application ID does not exist")
+	}
+
+	lma := LandMutationApplication{}
+	err = json.Unmarshal(lmaBytes, &lma)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	if lma.AssignTo == "EstateManager" {
+		lma.AssignTo = "CEO"
+	}
+
+	lmaBytes, err = json.Marshal(lma)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	err = stub.PutState(lmaKey, lmaBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(nil)
+}
