@@ -16,7 +16,25 @@ type SmartContract struct {
 }
 
 var bcFunctions = map[string]func(shim.ChaincodeStubInterface, []string) pb.Response{
-	"lma_create": createLMA,
+	// eDistrict
+	"lma_create":     createLMA,
+	"query_lma":      listLMA,
+	"citizen_create": createCitizen,
+	"query_citizen":  getCitizen,
+	"accept_citizen": citizenAcceptHearingDate,
+
+	// CEO
+	"poa_ceo": processLMACEO,
+
+	// eState Manager
+	"poa_estate_manager":     processLMAEstateManager,
+	"estate_manager_hearing": estateManagerHearing,
+
+	// Supervisor
+	"poa_supervisor": processLMASupervisor,
+
+	// Finance Officer
+	"poa_finance_officer": processLMAFinanceOfficer,
 }
 
 // Init callback representing the invocation of a chaincode
