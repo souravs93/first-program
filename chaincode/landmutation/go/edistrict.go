@@ -278,8 +278,8 @@ func citizenAcceptHearingDate(stub shim.ChaincodeStubInterface, args []string) p
 	}
 
 	if lma.AssignTo == "Citizen" {
-		if input.AcceptHearingDate {
-			lma.AssignTo = "EstateOfficer"
+		if input.AcceptHearingDate == true {
+			lma.AssignTo = "EstateManager"
 		}
 	}
 

@@ -36,7 +36,7 @@ func processLMAEstateManager(stub shim.ChaincodeStubInterface, args []string) pb
 		return shim.Error(err.Error())
 	}
 
-	if lma.AssignTo == "EstateOfficer" {
+	if lma.AssignTo == "EstateManager" {
 		if input.EstateMangerAction == "SetHearingDate" || input.EstateMangerAction == "ApplicationSentForCorrection" {
 			lma.AssignTo = "Citizen"
 			lma.Status = "Inprogress"
