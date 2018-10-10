@@ -7,6 +7,15 @@ import (
 	pb "github.com/hyperledger/fabric/protos/peer"
 )
 
+// CEO
+type CEO struct {
+	CEOID          string `json:"id"`
+	FirstName      string `json:"first_name"`
+	LastName       string `json:"last_name"`
+	DepartmentName string `json:"department_name"`
+	Address        string `json:"address"`
+}
+
 func processLMACEO(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	if len(args) != 1 {
 		return shim.Error("Invalid Arguments Count.")
@@ -17,6 +26,10 @@ func processLMACEO(stub shim.ChaincodeStubInterface, args []string) pb.Response 
 		SupervisorComment string `json:"comment"`
 	}{}
 	err := json.Unmarshal([]byte(args[0]), &input)
+
+	// CEO Comment
+	ceoComment := []string{input.SupervisorComment}
+	ceoComment = append(ceoComment, "true")
 
 	lmaKey, err := stub.CreateCompositeKey(prefixLMA, []string{input.ApplicationID})
 	if err != nil {

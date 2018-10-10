@@ -12,13 +12,137 @@ import (
    prefix + ApplicationID
 */
 type LandMutationApplication struct {
-	ApplicationID     string `json:"application_id"`
-	AadharID          string `json:"aadhar_id"`
-	UserName          string `json:"user_name"`
+	ApplicationID string `json:"application_id"`
+	AadharID      string `json:"aadhar_id"`
+	UserName      string `json:"user_name"`
+
+	// Update
+	ApplicantBaseInformation
+	PresentAddress
+	//CommunicationAddress
+	PropertyDetail
+	PurposeOfApplication
+	//RecordOwnerDetails
+	//PreviousOwnerDetails
+	//PersonLiableForPropertyTax
+	CooperativeMemberDetails
+	OtherDetails
+	DeclarationByApplicant
+
 	PlotNumber        string `json:"plot_number"`
 	DateOfApplication string `json:"date_of_application"`
 	AssignTo          string `json:"assign_to"`
 	Status            string `json:"status"`
+}
+
+// Update
+
+// ApplicationBaseInformation
+type ApplicantBaseInformation struct {
+	FirstName    string `json:"first_name"`
+	MobileNumber int    `json:"mobile_number"`
+	DOB          string `json:"DOB"`
+	Age          int    `json:"age"`
+}
+
+// PresentAddress
+type PresentAddress struct {
+	Country                   string `json:"country"`
+	State                     string `json:"state"`
+	District                  string `json:"district"`
+	SubDivision               string `json:"sub_division"`
+	RuralUrban                string `json:"rural_urban"`
+	BlockMunicipalCorporation string `json:"block_municipal_corporation"`
+	ActionArea                string `json:"action_area"`
+	AddressLineOne            string `json:"address_line_one"`
+	PinCode                   string `json:"pin_code"`
+}
+
+// CommunicationAddress
+type CommunicationAddress struct {
+	Country                   string `json:"country"`
+	State                     string `json:"state"`
+	District                  string `json:"district"`
+	SubDivision               string `json:"sub_division"`
+	RuralUrban                string `json:"rural_urban"`
+	BlockMunicipalCorporation string `json:"block_municipal_corporation"`
+	ActionArea                string `json:"action_area"`
+	AddressLineOne            string `json:"address_line_one"`
+	PinCode                   string `json:"pin_code"`
+}
+
+// PropertyDetail
+type PropertyDetail struct {
+	PropertyType string `json:"property_type"`
+	DeedValue    string `json:"deed_value"`
+}
+
+// PurposeOfApplication
+type PurposeOfApplication struct {
+	PurposeOfApplication string `jsob:"purpose_of_application"`
+	AvailabilityOfRoT    string `json:"availability_of_RoT"`
+}
+
+// RecordOwnerDetails
+type RecordOwnerDetails struct {
+	Salutation                    string `json:"salutation"`
+	Country                       string `json:"country"`
+	State                         string `json:"state"`
+	District                      string `json:"district"`
+	SubDivision                   string `json:"sub_division"`
+	RuralUrban                    string `json:"rural_urban"`
+	BlockMunicipalCorporation     string `json:"block_municipal_corporation"`
+	BlockMunicipalCorporationName string `json:"block_municipal_corporation_name"`
+}
+
+// PreviousOwnerDetails
+type PreviousOwnerDetails struct {
+	Country                       string `json:"country"`
+	State                         string `json:"state"`
+	District                      string `json:"district"`
+	SubDivision                   string `json:"sub_division"`
+	RuralUrban                    string `json:"rural_urban"`
+	BlockMunicipalCorporation     string `json:"block_municipal_corporation"`
+	BlockMunicipalCorporationName string `json:"block_municipal_corporation_name"`
+	PinCode                       string `json:"pin_code"`
+}
+
+// PersonLiableForPropertyTax
+type PersonLiableForPropertyTax struct {
+	Country                       string `json:"country"`
+	State                         string `json:"state"`
+	District                      string `json:"district"`
+	SubDivision                   string `json:"sub_division"`
+	RuralUrban                    string `json:"rural_urban"`
+	BlockMunicipalCorporation     string `json:"block_municipal_corporation"`
+	BlockMunicipalCorporationName string `json:"block_municipal_corporation_name"`
+	PinCode                       string `json:"pin_code"`
+}
+
+// CooperativeMemberDetails
+type CooperativeMemberDetails struct {
+	PinCode string `json:"pin_code"`
+}
+
+// OtherDetails
+type OtherDetails struct {
+	WhetherPropertyIsAccessed string `json:"whether_property_is_accessed"`
+	WhetherPropertyTaxIsPaid  string `json:"whether_property_tax_is_paid"`
+	// change the following 2 to type date-time
+	DateOfTransferOfProperty          string `json:"date_of_transfer_of_property"`
+	DateOfPaymentOffFirstElectricBill string `json:"date_of_payment_off_first_electric_bill"`
+	NumberOfBuildingInPremise         string `json:"number_of_building_in_premise"`
+	NumberOfFloorsInTheBuilding       string `json:"number_of_floors_in_the_building"`
+	NameOfRoadWherePremiseIsSituated  string `json:"name_of_road_where_premise_is_situated"`
+	FlatNumberOfTheAssesses           string `json:"flat_number_of_the_assesses"`
+	CharacterTypeOfPremise            string `json:"character_type_of_premise"`
+}
+
+// DeclarationByApplicant
+type DeclarationByApplicant struct {
+	// Change this to type string
+	DateOfApplication string `json:"date_of_application"`
+	AcceptDeclaration string `json:"accept_decalaration"`
 }
 
 /* Define the Citizen structure, with 5 properties.
@@ -31,6 +155,9 @@ type Citizen struct {
 	Password string `json:"password"`
 	LastName string `json:"last_name"`
 	Address  string `json:"address"`
+
+	//Update
+	FatherName string `json:"father_name"`
 }
 
 func createLMA(stub shim.ChaincodeStubInterface, args []string) pb.Response {
@@ -233,11 +360,12 @@ func getCitizen(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	}
 
 	response := struct {
-		AadharID string `json:"aadhar_id"`
-		UserName string `json:"user_name"`
-		Password string `json:"password"`
-		LastName string `json:"last_name"`
-		Address  string `json:"address"`
+		AadharID   string `json:"aadhar_id"`
+		UserName   string `json:"user_name"`
+		Password   string `json:"password"`
+		LastName   string `json:"last_name"`
+		Address    string `json:"address"`
+		FatherName string `json:"father_name"`
 	}{}
 	err = json.Unmarshal(userBytes, &response)
 	if err != nil {

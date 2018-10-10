@@ -7,6 +7,15 @@ import (
 	pb "github.com/hyperledger/fabric/protos/peer"
 )
 
+// FinanceOfficer
+type FinanceOffice struct {
+	FinanceOfficerID string `json:"id"`
+	FirstName        string `json:"first_name"`
+	LastName         string `json:"last_name"`
+	DepartmentName   string `json:"department_name"`
+	Address          string `json:"address"`
+}
+
 func processLMAFinanceOfficer(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	if len(args) != 1 {
 		return shim.Error("Invalid Arguments Count.")
