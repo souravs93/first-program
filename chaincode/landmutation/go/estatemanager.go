@@ -10,10 +10,11 @@ import (
 // EstateManager
 type EstateManager struct {
 	EstateManagerID string `json:"id"`
-	FirstName       string `json:"first_name"`
-	LastName        string `json:"last_name"`
-	DepartmentName  string `json:"department_name"`
-	Address         string `json:"address"`
+
+	FirstName      string `json:"first_name"`
+	LastName       string `json:"last_name"`
+	DepartmentName string `json:"department_name"`
+	Address        string `json:"address"`
 }
 
 func processLMAEstateManager(stub shim.ChaincodeStubInterface, args []string) pb.Response {
